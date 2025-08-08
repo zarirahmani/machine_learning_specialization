@@ -168,21 +168,18 @@ class plt_one_addpt_onclick:
         self.fig.canvas.draw()
 
     def resize_sq(self, bcid):
-    # Try to get the checkbox rectangle in a way compatible with multiple Matplotlib versions
-        if hasattr(bcid, 'rectangles'):
-            rect = bcid.rectangles[0]
-        elif hasattr(bcid, 'buttons'):
-            rect = bcid.buttons[0]
-        else:
-        # fallback - raise error or handle differently
-            raise AttributeError("CheckButtons object has no attribute 'buttons' or 'rectangles'")
-
+        """ resizes the check box """
+        rects = getattr(bcid, "buttons", None)
+        if rects is None:
+            rects = bcid.rectangles
+        rect = rects[0]
         h = rect.get_height()
         rect.set_height(3*h)
+
         ymax = rect.get_bbox().y1
         ymin = rect.get_bbox().y0
 
-        bcid.lines[0][0].set_ydata([ymax,ymin])
-        bcid.lines[0][1].set_ydata([ymin,ymax])
+        bcid.lines[0][0].set_ydata([ymax, ymin])
+        bcid.lines[0][1].set_ydata([ymin, ymax])
 
       
